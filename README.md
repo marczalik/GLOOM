@@ -5,6 +5,9 @@ Gloomhaven Optimal Order Machine
 
 GLOOM is a tool for helping players determine non-blocking scenarios in the digital version of the boardgame Gloomhaven. This project helps alleviate the need to cross-reference scenario names (displayed in the game) with their numbers (not displayed in the game) used for checking scenario flowcharts if a given scenario permanently blocks others.
 
+## Usage
+
+
 ### TODOs
 
 1. Implement Fuzzy Matching
