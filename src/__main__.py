@@ -81,35 +81,36 @@ class GLOOM:
         return voice_input
 
     def _find_blocked_scenarios(self, scenario: str):
-        scenario_idx = self._name_to_idx(scenario)
+        scenario_idx, match_name = self._name_to_idx(scenario)
         if scenario_idx == -1:
             return
         blocked_scenarios = Database.Database.blockers.get(scenario_idx, None)
         if blocked_scenarios is None:
             print(f"No blocked scenarios found for {scenario}...\n")
         else:
-            self._print_blocked_scenarios(blocked_scenarios)
+            self._print_blocked_scenarios(match_name, blocked_scenarios)
 
-    def _name_to_idx(self, name: str) -> int:
+    def _name_to_idx(self, name: str) -> Tuple[int, str]:
         scenario_idx, scenario_name, match_ratio = self._get_best_match(name)
         if match_ratio == 100:
-            return scenario_idx
+            return scenario_idx, scenario_name
         elif 80 < match_ratio < 100:
             if self._verify_close_match(scenario_name):
-                return scenario_idx
+                return scenario_idx, scenario_name
             else:
-                return -1
+                return -1, "" 
         else:
             self.logger.warning(f"Scenario {name} not found!\n")
-            return -1
+            return -1, ""
 
     def _idx_to_name(self, idx: int) -> str:
         return Database.Database.scenarios[idx]
 
-    def _print_blocked_scenarios(self, blocks: List[Tuple[int, Optional[str]]]):
+    def _print_blocked_scenarios(self, scenario: str, blocks: List[Tuple[int, Optional[str]]]):
+        print(f"{scenario.title()} blocks:")
         for scenario, reason in blocks:
             name = self._idx_to_name(scenario)
-            output = f"\tBlocks scenario {scenario}: {name.title()}"
+            output = f"\t{scenario}: {name.title()}"
             output += f" {reason}" if reason else ""
             print(output)
         print()
