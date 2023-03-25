@@ -10,12 +10,11 @@ GLOOM is a tool for helping players determine non-blocking scenarios in the digi
 
 ### TODOs
 
-1. Implement Fuzzy Matching
 1. Highlighted text output
+1. Voice Commands
 
 ### Stretch Goals
 
-1. Voice Commands
 1. Search by monster type
 1. GUI
 
