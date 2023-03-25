@@ -5,5 +5,5 @@ setup(name="gloom",
       description="Run GLOOM",
       url="https://github.com/marczalik/GLOOM",
       author="Marc Zalik",
-      packages=["gloom"],
+      find_packages=["src"],
       zip_safe=False)
