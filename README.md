@@ -11,7 +11,6 @@ GLOOM is a tool for helping players determine non-blocking scenarios in the digi
 ### TODOs
 
 1. Highlighted text output
-1. Voice Commands
 
 ### Stretch Goals
 
