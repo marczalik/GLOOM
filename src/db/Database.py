@@ -2,9 +2,8 @@ from dataclasses import dataclass
 from typing import Dict, List, Optional, Tuple
 
 
-@dataclass
 class Database:
-    scenario_ids: Dict[int, str] = {
+    scenarios: Dict[int, str] = {
         1: "black barrow",
         2: "barrow lair",
         3: "inox encampment",
