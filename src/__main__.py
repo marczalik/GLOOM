@@ -51,7 +51,7 @@ class GLOOM:
         if type == "1":        
             resp = input("Pick a scenario: ")       
         elif type == "2":
-            pass
+            resp = self._get_voice_input()
         return resp
     
     def _greeting(self) -> str:
@@ -66,6 +66,19 @@ class GLOOM:
             print("\t2. Voice input")
             resp = input("[1/2]: ")
         return resp
+    
+    def _get_voice_input(self):
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            print("Say something!")
+            audio = r.listen(source)
+            try:
+                voice_input = r.recognize_google(audio)
+            except sr.UnknownValueError:
+                self.logger.warning("Google Speech Recognition could not understand audio")
+            except sr.RequestError as e:
+                self.logger.error("Could not request results from Google Speech Recognition service; {0}".format(e))
+        return voice_input
 
     def _find_blocked_scenarios(self, scenario: str):
         scenario_idx = self._name_to_idx(scenario)
