@@ -1,3 +1,5 @@
+import speech_recognition as sr
+
 from db import Database
 from logging import getLogger
 from thefuzz import fuzz
@@ -9,10 +11,28 @@ class GLOOM:
         self.logger = getLogger("logger")
 
     def run(self):
-        cmd = None
-        while cmd != "q":
-            cmd = input("Pick a scenario: ")
-            self._find_blockd_scenarios(cmd)
+        self._cli()
+        
+    def _cli(self):
+        resp = None
+        while True:
+            resp = self._greeting()
+            if self._do_close(resp):
+                return
+            choice = self._get_input(resp)
+            if self._do_close(choice):
+                return
+            self._find_blocked_scenarios(choice)
+
+    def _do_close(self, resp: str) -> bool:
+        close = False
+        if resp is None:
+            close = False
+        elif resp.lower() == 'q' or resp.lower() == "quit":
+            close = True
+        else:
+            close = False
+        return close 
 
     def _get_best_match(self, name: str) -> Tuple[int, str, int]:
         best_match: Tuple[int, str, int] = (-1, None, -1)
@@ -26,8 +46,28 @@ class GLOOM:
                     best_match = (scenario_idx, scenario_name, match_ratio)
 
         return best_match
+    
+    def _get_input(self, type: int):
+        if type == "1":        
+            resp = input("Pick a scenario: ")       
+        elif type == "2":
+            pass
+        return resp
+    
+    def _greeting(self) -> str:
+        print("Enter 'q' or 'Quit' to quit")
+        return self._get_type_of_iput()
+        
+    def _get_type_of_iput(self) -> str:
+        resp = None
+        while resp != "1" and resp != "2" and not self._do_close(resp):
+            print("Select from the following options:")
+            print("\t1. Text input")
+            print("\t2. Voice input")
+            resp = input("[1/2]: ")
+        return resp
 
-    def _find_blockd_scenarios(self, scenario: str):
+    def _find_blocked_scenarios(self, scenario: str):
         scenario_idx = self._name_to_idx(scenario)
         if scenario_idx == -1:
             return
